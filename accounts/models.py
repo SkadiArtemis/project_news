@@ -21,6 +21,7 @@ class BaseRegisterForm(UserCreationForm):
                   "password2",
                   )
 
+
 class BasicSignupForm(SignupForm):
 
     def save(self, request):

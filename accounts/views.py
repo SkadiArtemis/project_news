@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from .models import BaseRegisterForm
 from django.shortcuts import render
+from news_app1.views import Category
+from news_app1.models import Post
 
 
 class BaseRegisterView(CreateView):
@@ -20,3 +22,17 @@ def upgrade_me(request):
     if not request.user.groups.fillter(name='authors').exists():
         authors_group.user_set.add(user)
     return redirect('/')
+
+
+def subscribe_user(request):
+    user = request.user
+    print(user)
+    category = Category.objects.get(id=request.Post['id_cat'])
+    print(category)
+
+    if category.subscribers.filter(id=user.id).exists():
+        category.subscribers.remove(user)
+    else:
+        category.subscribers.add(user)
+
+    return redirect('/profile')

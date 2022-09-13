@@ -4,8 +4,6 @@ from django.contrib.auth.models import User
 from django import forms
 
 
-
-
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
     ratingAuthor = models.SmallIntegerField(default=0)

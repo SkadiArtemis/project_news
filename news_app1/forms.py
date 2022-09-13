@@ -1,7 +1,7 @@
 from django import forms
 from django.core. exceptions import ValidationError
-
 from .models import Post
+
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -19,6 +19,7 @@ class PostForm(forms.ModelForm):
                 )
 
             return cleaned_data
+
 
 class Group(forms.ModelForm):
     pass

@@ -1,9 +1,10 @@
-from .models import Author, Post
-from django.views.generic import ListView, DetailView
-from .forms import PostForm
-from django.views.generic import TemplateView
+from django.views.generic import (ListView,
+                                  DetailView,
+                                  TemplateView,
+                                  CreateView)
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import CreateView
+from .forms import PostForm
+from .models import Author, Post, Category
 
 
 class AuthorListView(ListView):
@@ -12,7 +13,7 @@ class AuthorListView(ListView):
     template_name = 'news/author_list.html'
 
 
-class AuthorDetail(DetailView):
+class AuthorDetailView(DetailView):
     model = Author
     context_object_name = 'author'
     template_name = 'news/author_detail.html'
@@ -30,12 +31,12 @@ class PostListView(DetailView):
     context_object_name = 'posts'
 
 
-class PostCategory(CreateView):
+class PostCategoryView(CreateView):
     model = Post
     fields = ['__all__']
 
 
-class ProductCreate(CreateView):
+class PostCreateView(CreateView):
     form_class = PostForm
     model = Post
     template_name = 'news_edit.html'
@@ -48,5 +49,7 @@ class ProductCreate(CreateView):
 
 class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'protect/index.html'
+
+
 
 
