@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Sum
 from django.contrib.auth.models import User
 from django import forms
+from accounts.models import BaseRegisterForm
 
 
 class Author(models.Model):
@@ -23,6 +24,25 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
+    subscribers = models.ManyToManyField(User,
+                                         through='CategorySubscribers',
+                                         blank=True)
+
+
+class Subscribers(models.Model):
+    userID = models.ForeignKey(User, on_delete=models.CASCADE)
+    categoryID = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+
+class CategorySubscribers(models.Model):
+    subscriber_thru = models.ForeignKey(User,
+                                        on_delete=models.CASCADE,
+                                        blank=True,
+                                        null=True)
+    category_thru = models.ForeignKey(Category,
+                                      on_delete=models.CASCADE,
+                                      blank=True,
+                                      null=True)
 
 
 class Post(models.Model):
