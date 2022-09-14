@@ -24,6 +24,18 @@ def upgrade_me(request):
     return redirect('/')
 
 
+def add_subscribe(request):
+    pk = request.GET.get('pk')
+    user = request.user
+    subscribe_group = Group.objects.get(name='Subscribers')
+    if not request.user.groups.fillter(name='Subscribers').exists():
+        subscribe_group.user_set.add(user)
+        Category.objects.get(pk=pk).subscribes.add(request.user)
+    print(f'{request.user} подписался на новости {Category.objects.get(pk=pk)}')
+
+    return redirect('/')
+
+
 def subscribe_user(request):
     user = request.user
     print(user)

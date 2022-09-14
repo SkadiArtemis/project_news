@@ -1,4 +1,3 @@
-import self as self
 from django.views.generic import (ListView,
                                   DetailView,
                                   TemplateView,
@@ -14,7 +13,6 @@ from .models import (Author,
                      Subscribers,
                      Category)
 from accounts.models import User
-
 
 
 class AuthorListView(ListView):
@@ -52,8 +50,8 @@ class PostDetailView(DetailView):
         for item in post_category:
             cat_id = Category.objects.get(name__iexact=f'{item}').id
             subscriber = Subscribers(
-                userID = user_id,
-                categoryID = cat_id
+                userID=user_id,
+                categoryID=cat_id
             )
             subscriber.save()
 

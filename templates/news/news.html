@@ -1,0 +1,21 @@
+{% extends 'flatpages/default.html' %}
+{% load censor %}
+
+{% block title %}
+{{ flatpage.title }}
+{% endblock title %}
+
+{% block content %}
+<h2>{{ news_detail.title }}</h2>
+<hr>
+{{ news_detail.datetime_of_topic|date:'d: M: Y' }}
+<hr>
+{{ news_detail.text|censor }}
+<hr>
+
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="submit" value="subscribe"/>
+</form>
+
+{% endblock content %}
