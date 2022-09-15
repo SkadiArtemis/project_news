@@ -3,14 +3,14 @@ from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
 from django.template.loader import render_to_string
 
-from .models import PostCategory, UserCategory
+from .models import PostCategory, User
 
 
 @receiver(m2m_changed, sender=PostCategory)
 def message_for_subscribers(sender, instance, created, **kwargs):
     if created:
         for cat in PostCategory.objects.filter(post=instance):
-            for subscribe in UserCategory.objects.filter(category=cat.category):
+            for subscribe in User.objects.filter(category=cat.category):
                 msg = EmailMultiAlternatives(
                     subject=instance.title,
                     body=instance.contents,
