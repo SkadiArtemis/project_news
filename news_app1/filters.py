@@ -2,6 +2,7 @@ from django_filters import FilterSet, DateTimeFilter
 from django.forms import DateTimeInput
 from .models import Post
 
+
 class PostFilter(FilterSet):
     added_after = DateTimeFilter(
         field_name='added_at',

@@ -24,25 +24,24 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
-    subscribers = models.ManyToManyField(User,
-                                         through='CategorySubscribers',
-                                         blank=True)
 
 
 class Subscribers(models.Model):
-    userID = models.ForeignKey(User, on_delete=models.CASCADE)
-    categoryID = models.ForeignKey(Category, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscriptions')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subscribed_categories')
+    is_premium = models.BooleanField(
+        verbose_name='Премиальный ли подписчик',
+        default=False,
+    )
 
+    class Meta:
+        unique_together = [['category', 'user']]
 
-class CategorySubscribers(models.Model):
-    subscriber_thru = models.ForeignKey(User,
-                                        on_delete=models.CASCADE,
-                                        blank=True,
-                                        null=True)
-    category_thru = models.ForeignKey(Category,
-                                      on_delete=models.CASCADE,
-                                      blank=True,
-                                      null=True)
+    def __str__(self) -> str:
+        return f'Подписка на категорию #{self.category_id}'
+    
+    def __repr__(self) -> str:
+        return f'Подписка на категорию #{self.category_id}'
 
 
 class Post(models.Model):
