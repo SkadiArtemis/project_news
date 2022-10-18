@@ -1,6 +1,6 @@
 from django import forms
 from django.core. exceptions import ValidationError
-from .models import Post
+from .models import Post, Subscribers
 
 
 class PostForm(forms.ModelForm):
@@ -23,3 +23,9 @@ class PostForm(forms.ModelForm):
 
 class Group(forms.ModelForm):
     pass
+
+
+class SubscribeForm(forms.ModelForm):
+    class Meta:
+        model = Subscribers
+        fields = ('category', )

@@ -21,7 +21,7 @@ from news_app1.views import IndexView, Post
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
-    path('', include('news_app1.urls')),
+    path('', include(('news_app1.urls', 'news'), namespace='news')),
     path('', IndexView.as_view()),
     path('accounts/', include('allauth.urls'))
 ]

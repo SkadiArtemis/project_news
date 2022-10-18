@@ -1,13 +1,16 @@
+from urllib.request import Request
 from django.views.generic import (ListView,
                                   DetailView,
                                   TemplateView,
                                   CreateView)
+from django.http import HttpRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
+from django.urls import reverse
 from django.shortcuts import redirect
 from django.core.mail import EmailMultiAlternatives
 from django.dispatch import receiver
-from .forms import PostForm
+from .forms import PostForm, SubscribeForm
 from .models import (Author,
                      Post,
                      Subscribers,
@@ -58,9 +61,9 @@ class PostDetailView(DetailView):
             return redirect('/')
 
 
-class PostListView(DetailView):
+class PostListView(ListView):
     model = Post
-    template_name = 'news.html'
+    template_name = 'posts/list.html'
     context_object_name = 'posts'
 
 
@@ -75,6 +78,7 @@ class PostCreateView(CreateView):
     template_name = 'news_edit.html'
 
     def form_valid(self, form):
+        print(123)
         post = form.save(commit=False)
         post.quantity = 13
         return super().form_valid(form)
@@ -84,8 +88,13 @@ class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'protect/index.html'
 
 
-#@receiver(m2m_changed, sender=PostCategoryView)
-#def message_fot_subscribers(sender, instance, created, **kwargs):
- #   if created:
- #       for cat in PostCategoryView.objects.filter(post=instance):
- #           for cat in UserCategory.objects.filter(category=cat.category)
+def subscribe_users(request: HttpRequest):
+    if request.method == 'POST':
+        form = SubscribeForm(request.POST)
+        if form.is_valid():
+            Subscribers.objects.create(
+                user_id=request.user.id,
+                category_id=form.data.get('category')[0],
+            )
+        url = reverse('news:news-list')
+        return redirect(url)
