@@ -5,7 +5,8 @@ from django.views.generic import (ListView,
                                   CreateView)
 from django.http import HttpRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404
+from django.http import (Http404,
+                         HttpResponse)
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.core.mail import EmailMultiAlternatives
@@ -16,7 +17,7 @@ from .models import (Author,
                      Subscribers,
                      Category)
 from accounts.models import User
-
+import logging
 
 class AuthorListView(ListView):
     model = Author
@@ -98,3 +99,11 @@ def subscribe_users(request: HttpRequest):
             )
         url = reverse('news:news-list')
         return redirect(url)
+
+
+logger = logging.getLogger('django')
+
+
+def index(request):
+    logger.error('Testing!')
+    return HttpResponse('Hello this logging world!')
